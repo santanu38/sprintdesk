@@ -28,4 +28,9 @@ export async function refreshTokenRequest(refreshToken:string):Promise<RefreshRe
     return response.data
 }
 
+export async function getMeRequest(): Promise<AuthUser> {
+  const response = await dummyJsonClient.get<AuthUser>("/auth/me")
+  return response.data
+}
+
 

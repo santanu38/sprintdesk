@@ -6,14 +6,17 @@ interface AuthState{
     user:AuthUser | null
     accessToken:string | null
     isAuthenticated:boolean
+    isInitializing: boolean
     setAuth:(user:AuthUser , accessToken:string ) => void
     clearAuth:() => void
+    finishInitializing: () => void
 }
 
 export const useAuthStore=create<AuthState>((set)=>({
    user:null,
    accessToken:null,
    isAuthenticated:false,
+    isInitializing: true,
 
    setAuth:(user,accessToken)=>
     set({
@@ -27,5 +30,6 @@ export const useAuthStore=create<AuthState>((set)=>({
             user:null,
             accessToken:null,
             isAuthenticated:false
-        })
+        }),
+        finishInitializing: () => set({ isInitializing: false }),
 }))

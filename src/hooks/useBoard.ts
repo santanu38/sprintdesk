@@ -9,7 +9,7 @@ export function useBaord(){
    const setTasks=useBoardStore((state)=>state.setTasks)
 
    useEffect(()=>{
-     if(fetchedTask){
+     if(fetchedTask && tasks.length===0){
         setTasks(fetchedTask)
      }
    },[fetchedTask,setTasks])

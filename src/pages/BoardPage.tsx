@@ -1,10 +1,11 @@
-import { DndContext ,closestCorners} from "@dnd-kit/core"
+import { DndContext ,closestCorners,useSensor,useSensors,PointerSensor} from "@dnd-kit/core"
 import type { DragEndEvent } from "@dnd-kit/core"
 import Navbar from "../components/layout/Navbar"
 import BoardColumn from "../features/board/BoardColumn"
 import { useBaord } from "../hooks/useBoard"
 import { useBoardStore } from "../store/boardStore"
 import type { TaskStatus } from "../types/task.types"
+import TaskDrawer from "../features/board/TaskDrawer"
 
 
 const columns:{status:TaskStatus,title:string}[]=[
@@ -42,6 +43,13 @@ function BoardPage() {
     moveTask(activeTaskId, targetStatus, newOrder)
   }
     
+  const sensors=useSensors(
+    useSensor(PointerSensor,{
+      activationConstraint:{
+        distance:8
+      }
+    })
+  )
    
    if (isLoading) {
     return (
@@ -65,7 +73,7 @@ function BoardPage() {
     <div className="min-h-screen bg-slate-900">
       <Navbar />
       
-      <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+      <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
           <div className="p-8 flex gap-4 overflow-x-auto">
         {columns.map((column) => (
           
@@ -80,7 +88,7 @@ function BoardPage() {
         ))}
       </div>
       </DndContext>
-      
+      <TaskDrawer/>
     </div>
   )
   
