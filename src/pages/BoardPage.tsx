@@ -6,6 +6,7 @@ import { useBaord } from "../hooks/useBoard"
 import { useBoardStore } from "../store/boardStore"
 import type { TaskStatus } from "../types/task.types"
 import TaskDrawer from "../features/board/TaskDrawer"
+import AddTaskModal from "../features/board/AddTaskModal"
 
 
 const columns:{status:TaskStatus,title:string}[]=[
@@ -16,7 +17,7 @@ const columns:{status:TaskStatus,title:string}[]=[
   ]
 
 function BoardPage() {
-
+   const openAddModal=useBoardStore((state)=>state.openAddModal)
    const {tasks,isLoading,isError}=useBaord()
    const moveTask=useBoardStore((state)=>state.moveTask)
 
@@ -72,7 +73,14 @@ function BoardPage() {
   return (
     <div className="min-h-screen bg-slate-900">
       <Navbar />
-      
+       <div className="px-8 pt-4">
+        <button
+           onClick={openAddModal}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+        >
+          + Add Task
+        </button>
+      </div>
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
           <div className="p-8 flex gap-4 overflow-x-auto">
         {columns.map((column) => (
@@ -89,6 +97,7 @@ function BoardPage() {
       </div>
       </DndContext>
       <TaskDrawer/>
+      <AddTaskModal/>
     </div>
   )
   

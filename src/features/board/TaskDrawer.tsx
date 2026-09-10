@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useComments } from "../../hooks/useComments"
 import { useBoardStore } from "../../store/boardStore"
 
@@ -8,10 +9,15 @@ const closeTaskDrawer=useBoardStore((state)=>state.closeTaskDrawer)
 const tasks=useBoardStore((state)=>state.tasks)
 const task=tasks.find((t)=>t.id===selectedTaskId)
 const updateTask=useBoardStore((state)=>state.updateTask)
+const deleteTask=useBoardStore((state)=>state.deleteTask)
+
+const [showDeleteConfirm,setShowDeleteConfirm]=useState(false)
 
 const {data:comments,isLoading:commentsLoading}=useComments(selectedTaskId)
 
   if(!task) return null
+
+
 
 return (
     <div className="fixed inset-0 z-50 flex justify-end">
@@ -79,7 +85,41 @@ return (
             </div>
           ))}
         </div>
+         <div className="mt-6 pt-6 border-t border-slate-700">
+          {!showDeleteConfirm ?(
+            <button onClick={()=>setShowDeleteConfirm(true)}
+            className="text-red-400 hover:text-red-300 text-sm">
+                 Delete this task
+            </button>
+          ):(
+            <div className="bg-red-900/30 border border-red-700 rounded p-3">
+              <p className="text-white text-sm mb-3">
+                Are you sure? This can't be undone.
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    deleteTask(task.id)
+                    closeTaskDrawer()
+                  }}
+                  className="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1.5 rounded"
+                >
+                  Yes, delete
+                </button>
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="bg-slate-600 hover:bg-slate-700 text-white text-sm px-3 py-1.5 rounded"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+
+          )}
+       </div>
       </div>
+     
+      
     </div>
   )
 }

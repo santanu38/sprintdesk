@@ -12,6 +12,9 @@ interface BoardState{
     updateTask:(taskId:number,updates:Partial<Task>)=>void
     openTaskDrawer:(taskId:number)=>void
     closeTaskDrawer:()=>void
+    isAddModalOpen:boolean
+    openAddModal:()=>void
+    closeAddModal:()=>void
 
 }
 
@@ -19,11 +22,16 @@ export const useBoardStore=create<BoardState>()(
     persist(
         (set)=>({
             tasks:[],
+             selectedTaskId:null,
+            isAddModalOpen:false,
+
             setTasks:(tasks)=>set({tasks}),
-            selectedTaskId:null,
             openTaskDrawer:(taskId)=>set({selectedTaskId:taskId}),
             closeTaskDrawer:()=>set({selectedTaskId:null}),
 
+            openAddModal:()=>set({isAddModalOpen:true}),
+            closeAddModal:()=>set({isAddModalOpen:false}),
+            
             moveTask:(taskId,newStatus,newOrder)=>
                 set((state)=>({
                 tasks:state.tasks.map((task)=>task.id===taskId?{...task,status:newStatus,order:newOrder}:task)
