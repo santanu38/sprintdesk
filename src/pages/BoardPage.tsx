@@ -7,6 +7,7 @@ import { useBoardStore } from "../store/boardStore"
 import type { TaskStatus } from "../types/task.types"
 import TaskDrawer from "../features/board/TaskDrawer"
 import AddTaskModal from "../features/board/AddTaskModal"
+import Skeleton from "../components/ui/Skeleton"
 
 
 const columns:{status:TaskStatus,title:string}[]=[
@@ -56,7 +57,16 @@ function BoardPage() {
     return (
       <div className="min-h-screen bg-slate-900">
         <Navbar />
-        <div className="text-white p-8">Loading board...</div>
+        <div className="p-8 flex gap-4">
+           {[1,2,3,4].map((i)=>(
+            <div key={i} className="bg-slate-900 rounded-lg p-4 w-72 flex-shrink-0 space-y-3">
+                 <Skeleton className="h-5 w-24"/>
+                 <Skeleton className="h-16 w-full"/>
+                 <Skeleton className="h-16 w-full" />
+                 <Skeleton className="h-16 w-full" />
+            </div>
+           ))}
+        </div>
       </div>
     )
   }

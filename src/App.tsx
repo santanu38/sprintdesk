@@ -1,5 +1,6 @@
 import AppRouter from "./routes/AppRouter"
 import { useInitAuth } from "./hooks/useInitAuth"
+import ToastContainer from "./components/ui/Toast"
 
 function App() {
     const { isInitializing } = useInitAuth()
@@ -11,7 +12,10 @@ function App() {
       </div>
     )
   }
-  return <AppRouter />
+  return <>
+    <AppRouter />
+    <ToastContainer/>
+  </>
 }
 
 export default App
