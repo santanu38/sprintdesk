@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom"
 
 import { useLogout } from "../../hooks/useLogout"
+import NotificationBell from "../../features/notification/NotificationBell"
 
 
 function Navbar() {
@@ -30,12 +31,17 @@ function Navbar() {
           </Link>
         ))}
       </div>
-      <button
-        onClick={logout}
-        className="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1.5 rounded"
-      >
-        Logout
-      </button>
+
+        <div className="flex items-center gap-4">
+          <NotificationBell/>
+        
+        <button
+          onClick={logout}
+          className="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1.5 rounded"
+        >
+          Logout
+        </button>
+      </div>
     </nav>
   )
 }
