@@ -8,6 +8,7 @@ import type { TaskStatus } from "../types/task.types"
 import TaskDrawer from "../features/board/TaskDrawer"
 import AddTaskModal from "../features/board/AddTaskModal"
 import Skeleton from "../components/ui/Skeleton"
+import { useCallback } from "react"
 
 
 const columns:{status:TaskStatus,title:string}[]=[
@@ -23,27 +24,31 @@ function BoardPage() {
    const moveTask=useBoardStore((state)=>state.moveTask)
 
 
-    function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event
+    const handleDragEnd=useCallback(
+      (event: DragEndEvent)=> {
+        const { active, over } = event
 
-    if (!over) return
+        if (!over) return
 
-    const activeTaskId = Number(active.id)
-    const activeTask = tasks.find((task) => task.id === activeTaskId)
-    if (!activeTask) return
+        const activeTaskId = Number(active.id)
+        const activeTask = tasks.find((task) => task.id === activeTaskId)
+        if (!activeTask) return
 
-    // Determine the target status: `over.id` is either a column status
-    // (dropped on empty space) or another task's id (dropped on a task).
-    const overIsColumn = columns.some((col) => col.status === over.id)
-    const targetStatus: TaskStatus = overIsColumn
-      ? (over.id as TaskStatus)
-      : tasks.find((task) => task.id === Number(over.id))?.status ?? activeTask.status
+        // Determine the target status: `over.id` is either a column status
+        // (dropped on empty space) or another task's id (dropped on a task).
+        const overIsColumn = columns.some((col) => col.status === over.id)
+        const targetStatus: TaskStatus = overIsColumn
+          ? (over.id as TaskStatus)
+          : tasks.find((task) => task.id === Number(over.id))?.status ?? activeTask.status
 
-    const tasksInTargetColumn = tasks.filter((task) => task.status === targetStatus)
-    const newOrder = tasksInTargetColumn.length + 1
+        const tasksInTargetColumn = tasks.filter((task) => task.status === targetStatus)
+        const newOrder = tasksInTargetColumn.length + 1
 
-    moveTask(activeTaskId, targetStatus, newOrder)
-  }
+        moveTask(activeTaskId, targetStatus, newOrder)
+      },[tasks,moveTask]
+    )
+    
+    
     
   const sensors=useSensors(
     useSensor(PointerSensor,{

@@ -8,6 +8,7 @@ import {
 import Navbar from "../components/layout/Navbar"
 import { useBaord } from "../hooks/useBoard"
 import { getCompletionTrend, getPriorityBreakdown, getSPrintVelocity, getTaskStatusDistribution } from "../lib/analytics"
+import { useMemo } from "react"
 
 const STATUS_COLORS: Record<string, string> = {
   backlog: "#64748b",
@@ -34,11 +35,11 @@ function AnalyticsPage() {
       </div>
     )
   }
-
-  const statusData=getTaskStatusDistribution(tasks)
-  const priorityData=getPriorityBreakdown(tasks)
-  const completionData=getCompletionTrend(tasks)
-  const velocityData=getSPrintVelocity(tasks)
+  
+  const statusData=useMemo(()=>getTaskStatusDistribution(tasks),[tasks])
+  const priorityData=useMemo(()=>getPriorityBreakdown(tasks),[tasks])
+  const completionData=useMemo(()=>getCompletionTrend(tasks),[tasks])
+  const velocityData=useMemo(()=>getSPrintVelocity(tasks),[tasks])
 
 
 

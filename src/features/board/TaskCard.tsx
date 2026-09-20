@@ -1,4 +1,5 @@
 import { useBoardStore } from "../../store/boardStore";
+import { memo } from "react";
 import type { Task } from "../../types/task.types";
 
 
@@ -29,4 +30,4 @@ function TaskCard({ task }: TaskCardProps) {
   )
 }
 
-export default TaskCard
+export default memo(TaskCard)
